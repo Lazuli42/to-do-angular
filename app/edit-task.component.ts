@@ -22,6 +22,15 @@ import { Task } from './task.model';
         <option Value="Low">Low</option>
       </select>
     </div>
+    <div>
+      <label>Category</label>
+      <select [(ngModel)]="childSelectedTask.category">
+        <option value="Work">Work</option>
+        <option value="Home">Home</option>
+        <option value="Hobby">Hobby</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
     <button (click)="doneClicked()">Done</button>
   </div>
   `

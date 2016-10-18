@@ -21,19 +21,29 @@ import { Task } from './task.model';
         <option value="Low">Low</option>
       </select>
     </div>
+    <div>
+      <label>Category</label>
+      <select #newCategory>
+        <option value="Work">Work</option>
+        <option value="Home" selected="selected">Home</option>
+        <option value="Hobby">Hobby</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
     <button (click)="
-      addClicked(newDescription.value, newId.value, newPriority.value);
+      addClicked(newDescription.value, newId.value, newPriority.value, newCategory.value);
       newDescription.value='';
       newId.value='';
       newPriority.value='';
+      newCategory.value='';
     ">Add</button>
   `
 })
 
 export class NewTaskComponent {
   @Output() newTaskSender = new EventEmitter();
-  addClicked(description: string, id: number, priority: string) {
-    var newTaskToAdd: Task = new Task(description, id, priority);
+  addClicked(description: string, id: number, priority: string, category: string) {
+    var newTaskToAdd: Task = new Task(description, id, priority, category);
     this.newTaskSender.emit(newTaskToAdd);
   }
 }

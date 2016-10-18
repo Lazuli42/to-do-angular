@@ -13,7 +13,14 @@ import { Task } from './task.model';
       <option value="highFirst">Sort: High to Low</option>
       <option value="lowFirst">Sort: Low to High</option>
     </select>
-    <div *ngFor="let currentTask of childTaskList | completeness:selectedCompleteness | priorities:selectedPriorities">
+    <select (change)="categoryFilter($event.target.value)" class="filter">
+      <option value="all" selected="selected">All Tasks</option>
+      <option value="Work">Work Tasks</option>
+      <option value="Home">Home Tasks</option>
+      <option value="Hobby">Hobby Tasks</option>
+      <option value="Other">Other Tasks</option>
+    </select>
+    <div *ngFor="let currentTask of childTaskList | completeness:selectedCompleteness | priorities:selectedPriorities | category:selectedCategory">
       <task-display [task]="currentTask"></task-display>
       <button (click)="editButtonHasBeenClicked(currentTask)">Edit</button>
     </div>
@@ -25,6 +32,7 @@ export class TaskListComponent {
   @Output() clickSender = new EventEmitter();
   public selectedCompleteness: string = "notDone";
   public selectedPriorities: string = "highFirst";
+  public selectedCategory: string = "all";
   onChange(optionFromMenu) {
     this.selectedCompleteness = optionFromMenu;
     console.log(this.selectedCompleteness);
@@ -34,5 +42,8 @@ export class TaskListComponent {
   }
   prioritySort(preferredPriority) {
     this.selectedPriorities = preferredPriority;
+  }
+  categoryFilter(preferredCategory) {
+    this.selectedCategory = preferredCategory;
   }
 }
