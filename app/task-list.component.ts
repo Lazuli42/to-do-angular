@@ -4,6 +4,7 @@ import { Task } from './task.model';
 @Component({
   selector: 'task-list',
   template: `
+    <button (click)="newTaskButton()">New Task</button>
     <select (change)="onChange($event.target.value)" class="filter">
       <option value="all">Show All</option>
       <option value="isDone">Show Done</option>
@@ -20,6 +21,10 @@ import { Task } from './task.model';
       <option value="Hobby">Hobby Tasks</option>
       <option value="Other">Other Tasks</option>
     </select>
+    <new-task
+      [showNewTask]="showNewTask"
+      (newTaskSender)="newTask($event)"
+    ></new-task>
     <div *ngFor="let currentTask of childTaskList | completeness:selectedCompleteness | priorities:selectedPriorities | category:selectedCategory">
       <task-display [task]="currentTask"></task-display>
       <button (click)="editButtonHasBeenClicked(currentTask)">Edit</button>
@@ -33,6 +38,7 @@ export class TaskListComponent {
   public selectedCompleteness: string = "notDone";
   public selectedPriorities: string = "highFirst";
   public selectedCategory: string = "all";
+  public showNewTask: boolean = false;
   onChange(optionFromMenu) {
     this.selectedCompleteness = optionFromMenu;
     console.log(this.selectedCompleteness);
@@ -45,5 +51,14 @@ export class TaskListComponent {
   }
   categoryFilter(preferredCategory) {
     this.selectedCategory = preferredCategory;
+  }
+  newTask(newTask: Task) {
+    console.log(newTask);
+    this.childTaskList.push(newTask);
+    this.showNewTask = false;
+  }
+  newTaskButton() {
+    this.showNewTask = true;
+
   }
 }
