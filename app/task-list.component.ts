@@ -9,7 +9,11 @@ import { Task } from './task.model';
       <option value="isDone">Show Done</option>
       <option value="notDone" selected="selected">Show Not Done</option>
     </select>
-    <div *ngFor="let currentTask of childTaskList | completeness:selectedCompleteness">
+    <select (change)="prioritySort($event.target.value)" class="filter">
+      <option value="highFirst">Sort: High to Low</option>
+      <option value="lowFirst">Sort: Low to High</option>
+    </select>
+    <div *ngFor="let currentTask of childTaskList | completeness:selectedCompleteness | priorities:selectedPriorities">
       <task-display [task]="currentTask"></task-display>
       <button (click)="editButtonHasBeenClicked(currentTask)">Edit</button>
     </div>
@@ -20,11 +24,15 @@ export class TaskListComponent {
   @Input() childTaskList: Task[];
   @Output() clickSender = new EventEmitter();
   public selectedCompleteness: string = "notDone";
+  public selectedPriorities: string = "highFirst";
   onChange(optionFromMenu) {
     this.selectedCompleteness = optionFromMenu;
     console.log(this.selectedCompleteness);
   }
   editButtonHasBeenClicked(taskToEdit: Task) {
     this.clickSender.emit(taskToEdit);
+  }
+  prioritySort(preferredPriority) {
+    this.selectedPriorities = preferredPriority;
   }
 }
